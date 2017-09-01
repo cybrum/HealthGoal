@@ -13,33 +13,47 @@ import QtQuick.Layouts 1.2
 import QtGraphicalEffects 1.0
 Item {
 
-    RowLayout {
+    property int imageSize: 100
+    RowLayout{
         anchors.fill: parent
-        Layout.alignment: Qt.AlignHCenter
-        Column {
-            Layout.alignment: Qt.AlignCenter
-            width:100
-            height:100
+        ColumnLayout {
+            width:(parent.width-imageSize)/2
+            height: imageSize
+            anchors.fill: parent
+            spacing: 10
+            Text {
+                text: qsTr("PEER RANKING")
+                color: "black"
+                font.pixelSize: 16
+                verticalAlignment: Text.AlignVCenter
+                horizontalAlignment: Text.AlignHCenter
+                Layout.fillWidth: true
+            }
+            Rectangle {
+                color:"gray"
+                width: parent.width
+                height: 2
+                Layout.alignment: Qt.AlignCenter
+                Layout.fillWidth: true
+            }
 
             Text {
-                text: qsTr("Achivement")
-                anchors.horizontalCenter: parent.horizontalCenter
+                text: "78%"
+                //anchors.fill: parent
+                color: "black"
+                verticalAlignment: Text.AlignVCenter
+                horizontalAlignment: Text.AlignHCenter
+                font.pixelSize: 16
+                Layout.fillWidth: true
+            }
 
-            }
-            Image {
-                source :"qrc:/separator.png"
-                width:100
-                height:4
-            }
-            Text {
-                text: "570"
-                anchors.horizontalCenter: parent.horizontalCenter
-            }
         }
+
         Item {
-            width:100
-            height:100
+            Layout.preferredWidth: imageSize
+            Layout.preferredHeight:imageSize
             Layout.alignment: Qt.AlignCenter
+
             Image {
                 id: control
                 source:"qrc:/user.jpg"
@@ -54,28 +68,47 @@ Item {
                             height: Math.min(control.width, control.height)
                             width: height
                             radius: Math.min(width, height)
+                            border.color:"black"
+                            border.width: 2
+
                         }
                     }
                 }
             }
         }
-        Column {
-            width: 100
-            height: 100
-            Layout.alignment: Qt.AlignCenter
+        ColumnLayout {
+            //Layout.alignment: Qt.AlignCenter
+            anchors.fill: parent
+            width:(parent.width-imageSize)/2
+            height: imageSize
+            spacing: 10
+
             Text {
-                text: qsTr("Ranking")
-                anchors.horizontalCenter: parent.horizontalCenter
+                text: qsTr("ACHIEVEMENT")
+                color: "black"
+                font.pixelSize: 16
+                verticalAlignment: Text.AlignVCenter
+                horizontalAlignment: Text.AlignHCenter
+                Layout.fillWidth: true
+
             }
-            Image {
-                source :"qrc:/separator.png"
+            Rectangle {
+                Layout.alignment: Qt.AlignCenter
+                color:"gray"
                 width: 100
-                height:4
+                height: 2
             }
+
             Text {
-                text: "78%"
-                anchors.horizontalCenter: parent.horizontalCenter
+                text: "575"
+                color: "black"
+                anchors.fill: parent
+                font.pixelSize: 16
+                verticalAlignment: Text.AlignVCenter
+                horizontalAlignment: Text.AlignHCenter
+                Layout.fillWidth: true
             }
+
         }
     }
 }

@@ -8,5 +8,12 @@
         <file>ProfileArea.qml</file>
         <file>user.jpg</file>
         <file>separator.png</file>
+        <file>add_button.svg</file>
+        <file>close_button.svg</file>
+        <file>expand_button.svg</file>
+        <file>faded_add_new_hexagon.svg</file>
+        <file>hexagon_large.svg</file>
+        <file>hexagon_small.svg</file>
+        <file>profile circle.svg</file>
     </qresource>
 </RCC>

@@ -18,11 +18,11 @@ Window {
     visible: true
 
     //Customize for desktop
-    // width: Qt.platform.os == "Android" ? Screen.width : 480
-    // height: Qt.platform.os == "Android" ? Screen.height : 640
+     width: Qt.platform.os == "Android" ? Screen.width : 440
+     height: Qt.platform.os == "Android" ? Screen.height : 640
 
-    width: Screen.width
-    height:  Screen.height
+//    width: Screen.width
+//    height:  Screen.height
 
     title: qsTr("HealthGoal")
 
@@ -32,30 +32,6 @@ Window {
 
     ColumnLayout {
         anchors.fill: parent
-
-        Rectangle {
-
-            id: appBar
-            //Uncomment below line to make it android specific
-            //visible: Qt.platform.os == "Android"
-            Layout.preferredWidth: parent.width
-            Layout.preferredHeight: 80
-            color : "#40C0FF"
-            layer.enabled: true
-            layer.effect: DropShadow {
-                transparentBorder: true
-                horizontalOffset: 0
-                verticalOffset: 0
-            }
-            Text {
-                anchors.fill: parent
-                anchors.leftMargin: 10
-                text: pageName
-                font.pixelSize: 40
-                color:"white"
-                verticalAlignment: Text.AlignVCenter
-            }
-        }
 
         SwipeView {
             id: swipeArea
