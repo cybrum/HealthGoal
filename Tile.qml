@@ -9,11 +9,40 @@
 **/
 
 import QtQuick 2.7
+import QtQuick.Layouts 1.2
 
 Image {
-    id: name
+    id: root
+    property bool isLargeHexagon: false
+
     source: "qrc:/hexagon_small.svg"
     width: 150; height: 150
-//    border.left: 5; border.top: 5
-//    border.right: 5; border.bottom: 5
+    MouseArea {
+        anchors.fill: root
+        hoverEnabled: true
+        onPressAndHold: {
+            rowLayout.visible = true
+        }
+        onExited: {
+             rowLayout.visible = false
+        }
+    }
+
+    RowLayout {
+        id: rowLayout
+        anchors.fill: parent
+        visible: false
+        Layout.margins: 10
+        Image {
+            id: closeImage
+            source: "qrc:/close_button.svg"
+            Layout.alignment: isLargeHexagon? Qt.AlignRight: Qt.AlignCenter
+        }
+        Image {
+            id: expandImage
+            visible: isLargeHexagon
+            source: "qrc:/expand_button.svg"
+            Layout.alignment: Qt.AlignLeft
+        }
+    }
 }

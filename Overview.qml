@@ -50,6 +50,7 @@ Flickable {
 
                     width: hexagonLength*2
                     height: hexagonLength*2
+                    isLargeHexagon: true
 
                 }
             }
