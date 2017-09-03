@@ -10,6 +10,7 @@
 
 import QtQuick 2.7
 import QtQuick.Layouts 1.2
+import QtGraphicalEffects 1.0
 
 Image {
     id: root
@@ -27,6 +28,13 @@ Image {
     //To Add: Pass true to add 2 small hexagons and false to add Large hexagon
     signal newHexagonAdded(bool isSmall)
 
+    layer.enabled: true
+    layer.effect: DropShadow {
+        transparentBorder: true
+        horizontalOffset: 0
+        verticalOffset: 0
+    }
+
     MouseArea {
         anchors.fill: root
         hoverEnabled: true
@@ -34,7 +42,7 @@ Image {
             rowLayout.visible = true
         }
         onExited: {
-             rowLayout.visible = false
+            rowLayout.visible = false
         }
     }
 
@@ -78,7 +86,7 @@ Image {
                     if(isExpanded) {
                         root.isExpanded = false
                     }else {
-                         root.isExpanded = true
+                        root.isExpanded = true
                     }
                     //Emit Signal
                     toggleSize(isExpanded)
