@@ -14,6 +14,6 @@
         <file>faded_add_new_hexagon.svg</file>
         <file>hexagon_large.svg</file>
         <file>hexagon_small.svg</file>
-        <file>profile circle.svg</file>
+        <file>profile_circle.svg</file>
     </qresource>
 </RCC>

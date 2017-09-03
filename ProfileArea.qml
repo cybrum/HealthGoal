@@ -11,42 +11,55 @@
 import QtQuick 2.0
 import QtQuick.Layouts 1.2
 import QtGraphicalEffects 1.0
+
 Item {
+    id: root
 
+    //Property bindings
     property int imageSize: 100
-    RowLayout{
+    property string profileImageSource: "qrc:/user.jpg"
+    property string separatorColor: "gray"
+    property int separatorHeight: 2
+    property int fontSize: 16
+    property string textColor: "black"
+    property string achievementScore: "575"
+    property string peerRankingScore: "78%"
+
+    RowLayout {
+        id: rowLayout
         anchors.fill: parent
+        anchors.margins: 10
+        spacing: 10
+
         ColumnLayout {
-            width:(parent.width-imageSize)/2
-            height: imageSize
-            anchors.fill: parent
-            spacing: 10
+            id: leftColumnLayout
+            width: (rowLayout.width-imageSize)/2
+            height: 300
+
             Text {
+                id: peerRankingText
                 text: qsTr("PEER RANKING")
-                color: "black"
-                font.pixelSize: 16
-                verticalAlignment: Text.AlignVCenter
+                Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
                 horizontalAlignment: Text.AlignHCenter
-                Layout.fillWidth: true
+                font.pixelSize: fontSize
+                color: textColor
             }
+
             Rectangle {
-                color:"gray"
-                width: parent.width
-                height: 2
-                Layout.alignment: Qt.AlignCenter
+                id: leftSeparator
+                width: 110
+                height: separatorHeight
+                color: separatorColor
                 Layout.fillWidth: true
             }
 
             Text {
-                text: "78%"
-                //anchors.fill: parent
-                color: "black"
-                verticalAlignment: Text.AlignVCenter
-                horizontalAlignment: Text.AlignHCenter
-                font.pixelSize: 16
-                Layout.fillWidth: true
+                id: peerRankingScoreText
+                text: peerRankingScore
+                Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
+                font.pixelSize: fontSize
+                color: textColor
             }
-
         }
 
         Item {
@@ -55,17 +68,17 @@ Item {
             Layout.alignment: Qt.AlignCenter
 
             Image {
-                id: control
-                source:"qrc:/user.jpg"
+                id: profileImage
+                source: profileImageSource
                 anchors.fill: parent
                 layer.enabled: true
                 layer.effect: OpacityMask {
                     maskSource: Item {
-                        width: control.width
-                        height: control.height
+                        width: profileImage.width+5
+                        height: profileImage.height+5
                         Rectangle {
                             anchors.centerIn: parent
-                            height: Math.min(control.width, control.height)
+                            height: Math.min(profileImage.width, profileImage.height)
                             width: height
                             radius: Math.min(width, height)
                             border.color:"black"
@@ -74,41 +87,47 @@ Item {
                         }
                     }
                 }
+                //comment this section to remove gray circle
+                Image {
+                    anchors.fill: parent
+                    source:"qrc:/profile_circle.svg"
+                }
+                //!
             }
         }
+
         ColumnLayout {
-            //Layout.alignment: Qt.AlignCenter
-            anchors.fill: parent
-            width:(parent.width-imageSize)/2
-            height: imageSize
-            spacing: 10
+            id: rightColumnLayout
+            width: (rowLayout.width-100)/2
+            height: 285
 
             Text {
+                id: achievementText
                 text: qsTr("ACHIEVEMENT")
-                color: "black"
-                font.pixelSize: 16
-                verticalAlignment: Text.AlignVCenter
-                horizontalAlignment: Text.AlignHCenter
-                Layout.fillWidth: true
+                Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
+                font.pixelSize: fontSize
+                color: textColor
+            }
 
-            }
             Rectangle {
-                Layout.alignment: Qt.AlignCenter
-                color:"gray"
-                width: 100
-                height: 2
+                id: rightSeparator
+                width: 110
+                height: separatorHeight
+                color: separatorColor
+                Layout.fillWidth: true
             }
+
 
             Text {
-                text: "575"
-                color: "black"
-                anchors.fill: parent
-                font.pixelSize: 16
-                verticalAlignment: Text.AlignVCenter
-                horizontalAlignment: Text.AlignHCenter
-                Layout.fillWidth: true
+                id: achievementScoreText
+                text: achievementScore
+                Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
+                font.pixelSize: fontSize
+                color: textColor
             }
-
         }
     }
 }
+
+
+
