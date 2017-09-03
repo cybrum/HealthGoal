@@ -14,9 +14,6 @@ import QtQuick.Layouts 1.2
 Flickable {
     id: root
 
-    readonly property int hexagonLength: 120
-    property int hexagonCount: root.width/(hexagonLength+20)
-
     ColumnLayout {
 
         anchors.fill: parent
@@ -35,8 +32,6 @@ Flickable {
             Repeater {
                 model: 2
                 delegate: Tile  {
-                    width: hexagonLength
-                    height: hexagonLength
                 }
             }
         }
@@ -47,11 +42,8 @@ Flickable {
             Repeater {
                 model: 1
                 delegate: Tile  {
-
-                    width: hexagonLength*2
-                    height: hexagonLength*2
                     isLargeHexagon: true
-
+                    isExpanded: true
                 }
             }
         }
@@ -61,9 +53,36 @@ Flickable {
             Repeater {
                 model: 2
                 delegate: Tile  {
-                    width: hexagonLength
-                    height: hexagonLength
                 }
+            }
+        }
+        Loader {
+            id: addNew
+            anchors.centerIn: parent
+        }
+
+        Component {
+            id: hexagonComponent
+            Row {
+                spacing: 10
+                anchors.horizontalCenter: parent.horizontalCenter
+                Repeater {
+                    model: 1
+                    delegate: Tile  {
+                        isLargeHexagon: true
+                        isExpanded: true
+                    }
+                }
+            }
+        }
+        Tile  {
+            source: "qrc:/faded_add_new_hexagon.svg"
+            anchors.horizontalCenter: parent.horizontalCenter
+            isFadedHexagon:true
+            onNewHexagonAdded :{
+                //TODO
+               // var newHexagon = hexagonComponent.createObject(root);
+                addNew.sourceComponent = hexagonComponent
             }
         }
     }

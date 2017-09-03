@@ -19,7 +19,7 @@ Window {
 
     //Customize for desktop
      width: Qt.platform.os == "Android" ? Screen.width : 440
-     height: Qt.platform.os == "Android" ? Screen.height : 640
+     height: Qt.platform.os == "Android" ? Screen.height : 680
 
 //    width: Screen.width
 //    height:  Screen.height
