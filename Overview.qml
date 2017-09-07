@@ -13,77 +13,96 @@ import QtQuick.Layouts 1.2
 
 Flickable {
     id: root
-
+    property int tileHeight: 120
+    //Use Listview instead?
     ColumnLayout {
 
         anchors.fill: parent
-        anchors.bottomMargin: 20
         ProfileArea {
             Layout.alignment: Qt.AlignHCenter
-            Layout.fillHeight: true
+            Layout.fillHeight: false
             Layout.fillWidth: true
+            anchors.top: parent.top
             Layout.minimumHeight: 100
 
         }
         Row {
-            spacing: 10
+
+            spacing: 20
             anchors.horizontalCenter: parent.horizontalCenter
 
             Repeater {
                 model: 2
                 delegate: Tile  {
+                    hexagonLength: tileHeight
                 }
             }
         }
         Row{
             spacing: 10
-
             anchors.horizontalCenter: parent.horizontalCenter
             Repeater {
                 model: 1
                 delegate: Tile  {
                     isLargeHexagon: true
                     isExpanded: true
+                    hexagonLength: tileHeight
                 }
             }
         }
         Row {
-            spacing: 10
+            spacing: 20
             anchors.horizontalCenter: parent.horizontalCenter
             Repeater {
                 model: 2
                 delegate: Tile  {
+                    hexagonLength: tileHeight
                 }
             }
         }
-        Loader {
-            id: addNew
-            anchors.centerIn: parent
-        }
+        Item{
 
-        Component {
-            id: hexagonComponent
-            Row {
-                spacing: 10
+            Layout.fillHeight: true
+            Layout.fillWidth: true
+            Loader {
+                id: addNew
+                anchors.fill: parent
                 anchors.horizontalCenter: parent.horizontalCenter
-                Repeater {
-                    model: 1
-                    delegate: Tile  {
-                        isLargeHexagon: true
-                        isExpanded: true
+//                onLoaded: {
+//                    x = 100
+//                }
+            }
+
+            Component {
+                id: hexagonComponent
+                Row {
+                    spacing: 10
+                    anchors.fill: parent
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    Repeater {
+                        model: 1
+                        delegate: Tile  {
+                            isLargeHexagon: true
+                            isExpanded: true
+                            hexagonLength: tileHeight
+                        }
                     }
                 }
             }
         }
-        Tile  {
-            source: "qrc:/faded_add_new_hexagon.svg"
-            anchors.horizontalCenter: parent.horizontalCenter
-            isFadedHexagon:true
-            onNewHexagonAdded :{
-                //TODO
-               // var newHexagon = hexagonComponent.createObject(root);
-                addNew.sourceComponent = hexagonComponent
-            }
+
+    }
+    Tile  {
+        source: "qrc:/faded_add_new_hexagon.svg"
+        anchors.horizontalCenter: parent.horizontalCenter
+        isFadedHexagon:true
+        anchors.bottom: parent.bottom
+        hexagonLength: tileHeight
+        onNewHexagonAdded :{
+            //TODO
+            var newHexagon = hexagonComponent.createObject(root);
+            //addNew.sourceComponent = hexagonComponent
+            newHexagon.x = 100//(root.width-addNew.width)/2
         }
     }
 }

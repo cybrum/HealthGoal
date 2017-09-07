@@ -3,8 +3,6 @@
         <file>main.qml</file>
         <file>Tile.qml</file>
         <file>Overview.qml</file>
-        <file>Social.qml</file>
-        <file>Settings.qml</file>
         <file>ProfileArea.qml</file>
         <file>user.jpg</file>
         <file>separator.png</file>
