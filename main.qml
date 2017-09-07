@@ -30,54 +30,55 @@ Window {
     property int dpi: Screen.pixelDensity * 25.4
     property string pageName: qsTr("HealthGoal")
 
-    Rectangle {
-        anchors.fill: parent
-        gradient: Gradient {
-            GradientStop { position: 0.0; color: "#EEEEFF" }
-            GradientStop { position: 1.0; color: "lightblue" }
-        }
+//POC for particle effect
+//    Rectangle {
+//        anchors.fill: parent
+//        gradient: Gradient {
+//            GradientStop { position: 0.0; color: "#EEEEFF" }
+//            GradientStop { position: 1.0; color: "lightblue" }
+//        }
 
-        ParticleSystem {
-            anchors.fill: parent
-            ImageParticle {
-                groups: ["stars"]
-                color: "white"
-                anchors.fill: parent
-                source: "qrc:///particleresources/star.png"
-            }
-            Emitter {
-                group: "stars"
-                emitRate: 800
-                lifeSpan: 2400
-                size: 24
-                sizeVariation: 8
-                anchors.fill: parent
-            }
+//        ParticleSystem {
+//            anchors.fill: parent
+//            ImageParticle {
+//                groups: ["stars"]
+//                color: "white"
+//                anchors.fill: parent
+//                source: "qrc:///particleresources/star.png"
+//            }
+//            Emitter {
+//                group: "stars"
+//                emitRate: 800
+//                lifeSpan: 2400
+//                size: 24
+//                sizeVariation: 8
+//                anchors.fill: parent
+//            }
 
 
-            ImageParticle {
-                anchors.fill: parent
-                source: "qrc:///particleresources/star.png"
-                alpha: 0
-                alphaVariation: 0.2
-                colorVariation: 1.0
-            }
+//            ImageParticle {
+//                anchors.fill: parent
+//                source: "qrc:///particleresources/star.png"
+//                alpha: 0
+//                alphaVariation: 0.2
+//                colorVariation: 1.0
+//            }
 
-            Emitter {
-                anchors.centerIn: parent
-                emitRate: 400
-                lifeSpan: 2400
-                size: 48
-                sizeVariation: 8
-                velocity: AngleDirection {angleVariation: 180; magnitude: 60}
-            }
+//            Emitter {
+//                anchors.centerIn: parent
+//                emitRate: 400
+//                lifeSpan: 2400
+//                size: 48
+//                sizeVariation: 8
+//                velocity: AngleDirection {angleVariation: 180; magnitude: 60}
+//            }
 
-            Turbulence {
-                anchors.fill: parent
-                strength: 2
-            }
-        }
-    }
+//            Turbulence {
+//                anchors.fill: parent
+//                strength: 2
+//            }
+//        }
+//    }
 
     ColumnLayout {
         anchors.fill: parent

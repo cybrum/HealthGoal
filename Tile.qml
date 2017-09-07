@@ -20,7 +20,7 @@ Image {
     property bool isExpanded: false
     readonly property int hexagonLength: 120
 
-    source: "qrc:/hexagon_small.svg"
+    source: isFadedHexagon? "qrc:/faded_add_new_hexagon.svg" :"qrc:/hexagon_small.svg"
     width: isLargeHexagon? (isExpanded?hexagonLength*2:hexagonLength): hexagonLength
     height: isLargeHexagon? (isExpanded?hexagonLength*2:hexagonLength): (isFadedHexagon?hexagonLength/2:hexagonLength)
 
