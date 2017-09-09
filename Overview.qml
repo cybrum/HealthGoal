@@ -14,6 +14,8 @@ import QtQuick.Layouts 1.2
 Flickable {
     id: root
     property int tileHeight: 120
+    property alias loaderItem: loader.item
+
     //Use Listview instead?
     ColumnLayout {
 
@@ -65,9 +67,10 @@ Flickable {
             Layout.fillHeight: true
             Layout.fillWidth: true
             Loader {
-                id: addNew
+                id: loader
                 anchors.fill: parent
                 anchors.horizontalCenter: parent.horizontalCenter
+                //Layout.leftMargin: (parent.width - loaderItem.width)/2
 //                onLoaded: {
 //                    x = 100
 //                }
@@ -100,9 +103,9 @@ Flickable {
         hexagonLength: tileHeight
         onNewHexagonAdded :{
             //TODO
-            var newHexagon = hexagonComponent.createObject(root);
-            //addNew.sourceComponent = hexagonComponent
-            newHexagon.x = 100//(root.width-addNew.width)/2
+            //var newHexagon = hexagonComponent.createObject(root);
+            loader.sourceComponent = hexagonComponent
+            //newHexagon.x = 100//(root.width-loaderItem.width)/2
         }
     }
 }
