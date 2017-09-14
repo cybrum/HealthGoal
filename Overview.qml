@@ -11,12 +11,79 @@
 import QtQuick 2.7
 import QtQuick.Layouts 1.2
 
-Flickable {
-    id: root
-    property int tileHeight: 120
-    property alias loaderItem: loader.item
 
-    //Use Listview instead?
+Rectangle {
+    id: root
+    width: 500; height: 400
+    color: "white"
+    property int tileHeight: 120
+    property bool isLastRowLarge: false
+    // The model:
+    ListModel {
+        id: hexagonModel
+
+        ListElement {
+            name: "SmallHexagons"; cost: 120
+
+        }
+        ListElement {
+            name: "LargeHexagon"; cost: 240
+        }
+        ListElement {
+            name: "SmallHexagons"; cost: 120
+        }
+
+    }
+
+    // The delegate
+    Component {
+        id: listDelegate
+
+        Item {
+            id: delegateItem
+            property var itemName: name
+            width: listView.width; height: itemName === "LargeHexagon"? tileHeight*2 +20 :tileHeight+20
+            clip: true
+            Row {
+                spacing: 20
+                anchors.horizontalCenter: parent.horizontalCenter
+                anchors.verticalCenter: parent.verticalCenter
+
+                Repeater {
+                    model: {
+
+                        if(name != "SmallHexagons") {
+                            return 1;
+                        }
+
+                        return 2;
+                    }
+                    //delegateItem.itemModel.name === "SmallHexagons" ? 2 : 1
+                    delegate: Tile  {
+                        isLargeHexagon: itemName === "LargeHexagon"
+                        hexagonLength:  tileHeight
+                        isExpanded: itemName === "LargeHexagon"
+                    }
+                }
+            }
+
+            // Animate adding and removing of items:
+
+            ListView.onAdd: SequentialAnimation {
+                PropertyAction { target: delegateItem; property: "height"; value: 0 }
+                NumberAnimation { target: delegateItem; property: "height"; to: 80; duration: 250; easing.type: Easing.InOutQuad }
+            }
+
+            ListView.onRemove: SequentialAnimation {
+                PropertyAction { target: delegateItem; property: "ListView.delayRemove"; value: true }
+                NumberAnimation { target: delegateItem; property: "height"; to: 0; duration: 250; easing.type: Easing.InOutQuad }
+
+                // Make sure delayRemove is set back to false so that the item can be destroyed
+                PropertyAction { target: delegateItem; property: "ListView.delayRemove"; value: false }
+            }
+        }
+    }
+
     ColumnLayout {
 
         anchors.fill: parent
@@ -28,85 +95,48 @@ Flickable {
             Layout.minimumHeight: 100
 
         }
-        Row {
-
-            spacing: 20
-            anchors.horizontalCenter: parent.horizontalCenter
-
-            Repeater {
-                model: 2
-                delegate: Tile  {
-                    hexagonLength: tileHeight
-                }
-            }
-        }
-        Row{
-            spacing: 10
-            anchors.horizontalCenter: parent.horizontalCenter
-            Repeater {
-                model: 1
-                delegate: Tile  {
-                    isLargeHexagon: true
-                    isExpanded: true
-                    hexagonLength: tileHeight
-                }
-            }
-        }
-        Row {
-            spacing: 20
-            anchors.horizontalCenter: parent.horizontalCenter
-            Repeater {
-                model: 2
-                delegate: Tile  {
-                    hexagonLength: tileHeight
-                }
-            }
-        }
-        Item{
-
+        // The view:
+        ListView {
+            id: listView
+            //anchors.fill: parent
             Layout.fillHeight: true
             Layout.fillWidth: true
-            Loader {
-                id: loader
-                anchors.fill: parent
-                anchors.horizontalCenter: parent.horizontalCenter
-                //Layout.leftMargin: (parent.width - loaderItem.width)/2
-//                onLoaded: {
-//                    x = 100
-//                }
-            }
-
-            Component {
-                id: hexagonComponent
-                Row {
-                    spacing: 10
-                    anchors.fill: parent
-                    anchors.horizontalCenter: parent.horizontalCenter
-                    Repeater {
-                        model: 1
-                        delegate: Tile  {
-                            isLargeHexagon: true
-                            isExpanded: true
-                            hexagonLength: tileHeight
-                        }
-                    }
-                }
-            }
+            model: hexagonModel
+            delegate: listDelegate
         }
 
-    }
-    Tile  {
-        source: "qrc:/faded_add_new_hexagon.svg"
-        anchors.horizontalCenter: parent.horizontalCenter
-        isFadedHexagon:true
-        anchors.bottom: parent.bottom
-        hexagonLength: tileHeight
-        onNewHexagonAdded :{
-            //TODO
-            //var newHexagon = hexagonComponent.createObject(root);
-            loader.sourceComponent = hexagonComponent
-            //newHexagon.x = 100//(root.width-loaderItem.width)/2
+
+        Tile  {
+            id: fadedHexagon
+            source: "qrc:/faded_add_new_hexagon.svg"
+            //anchors.horizontalCenter: root.horizontalCenter
+            Layout.alignment: Qt.AlignHCenter
+            Layout.preferredHeight: tileHeight/2
+            Layout.preferredWidth: tileHeight
+            //            Layout.fillWidth:false
+            //            Layout.fillHeight:false
+            isFadedHexagon:true
+            isLargeHexagon: false
+            anchors.bottom: parent.bottom
+            hexagonLength: tileHeight
+            onNewHexagonAdded :{
+                isLastRowLarge = !isLastRowLarge
+
+                if(isLastRowLarge){
+                    hexagonModel.append({
+                                            "name": "SmallHexagons",
+                                            "cost": 240
+                                        })
+                } else {
+
+                hexagonModel.append({
+                                        "name": "LargeHexagon",
+                                        "cost": 240
+                                    })
+                }
+            }
         }
     }
 }
+
 
