@@ -27,6 +27,7 @@ Image {
     signal toggleSize(bool isLarge)
     //To Add: Pass true to add 2 small hexagons and false to add Large hexagon
     signal newHexagonAdded(bool isSmall)
+    signal hexagonRemoved()
 
     layer.enabled: true
     layer.effect: DropShadow {
@@ -72,6 +73,7 @@ Image {
                 anchors.fill: parent
                 onClicked: {
                     root.visible = false
+                    hexagonRemoved()
                 }
             }
         }

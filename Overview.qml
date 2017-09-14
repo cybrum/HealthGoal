@@ -41,28 +41,48 @@ Rectangle {
 
         Item {
             id: delegateItem
-            property var itemName: name
+            property string itemName: name
+            property int modelSize: 0
             width: listView.width; height: itemName === "LargeHexagon"? tileHeight*2 +20 :tileHeight+20
-            clip: true
+ //           clip: true
             Row {
                 spacing: 20
                 anchors.horizontalCenter: parent.horizontalCenter
                 anchors.verticalCenter: parent.verticalCenter
 
                 Repeater {
+                    id: repeater
                     model: {
 
                         if(name != "SmallHexagons") {
+                            modelSize = 1
                             return 1;
+                        } else {
+                            modelSize = 2
+                            return 2;
                         }
-
-                        return 2;
                     }
-                    //delegateItem.itemModel.name === "SmallHexagons" ? 2 : 1
+
                     delegate: Tile  {
                         isLargeHexagon: itemName === "LargeHexagon"
                         hexagonLength:  tileHeight
                         isExpanded: itemName === "LargeHexagon"
+                        onToggleSize:{
+                            if(isExpanded) {
+                                delegateItem.height = 20+tileHeight*2
+                            } else {
+                                delegateItem.height = tileHeight+20
+                            }
+                        }
+                        onHexagonRemoved: {
+                            modelSize --
+                            console.log("removed hexagon")
+                            if(modelSize === 0) {
+                                delegateItem.height = 0
+                                console.log("no hexagonsin row")
+                            }
+
+                        }
                     }
                 }
             }
@@ -125,14 +145,14 @@ Rectangle {
                 if(isLastRowLarge){
                     hexagonModel.append({
                                             "name": "SmallHexagons",
-                                            "cost": 240
+                                            "cost": 120
                                         })
                 } else {
 
-                hexagonModel.append({
-                                        "name": "LargeHexagon",
-                                        "cost": 240
-                                    })
+                    hexagonModel.append({
+                                            "name": "LargeHexagon",
+                                            "cost": 240
+                                        })
                 }
             }
         }
