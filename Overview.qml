@@ -74,12 +74,16 @@ Rectangle {
                                 delegateItem.height = tileHeight+20
                             }
                         }
+                        onNewHexagonAdded: {
+                            delegateItem.height = tileHeight +20
+                        }
+
                         onHexagonRemoved: {
                             modelSize --
                             console.log("removed hexagon")
                             if(modelSize === 0) {
                                 delegateItem.height = 0
-                                console.log("no hexagonsin row")
+                                console.log("no hexagons in row")
                             }
 
                         }
@@ -91,7 +95,7 @@ Rectangle {
 
             ListView.onAdd: SequentialAnimation {
                 PropertyAction { target: delegateItem; property: "height"; value: 0 }
-                NumberAnimation { target: delegateItem; property: "height"; to: 80; duration: 250; easing.type: Easing.InOutQuad }
+                NumberAnimation { target: delegateItem; property: "height"; to: delegateItem.height; duration: 250; easing.type: Easing.InOutQuad }
             }
 
             ListView.onRemove: SequentialAnimation {
@@ -140,7 +144,7 @@ Rectangle {
             anchors.bottom: parent.bottom
             hexagonLength: tileHeight
             onNewHexagonAdded :{
-                isLastRowLarge = !isLastRowLarge
+
 
                 if(isLastRowLarge){
                     hexagonModel.append({
@@ -154,6 +158,7 @@ Rectangle {
                                             "cost": 240
                                         })
                 }
+                isLastRowLarge = !isLastRowLarge
             }
         }
     }
