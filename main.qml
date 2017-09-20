@@ -19,7 +19,7 @@ Window {
     visible: true
 
     //Customize for desktop
-    width: Qt.platform.os == "Android" ? Screen.width : 440
+    width: Qt.platform.os == "Android" ? Screen.width : 350
     height: Qt.platform.os == "Android" ? Screen.height : 680
 
     //    width: Screen.width
@@ -29,7 +29,7 @@ Window {
 
     property int dpi: Screen.pixelDensity * 25.4
     property string pageName: qsTr("HealthGoal")
-    property int hexagonHeight: root.width/4
+    property real hexagonHeight: root.width/2.5
 
     Overview {
         id: secondPage

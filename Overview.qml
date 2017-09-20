@@ -16,21 +16,24 @@ Rectangle {
     id: root
     width: 500; height: 400
     color: "white"
-    property int tileHeight: 120
+    property real tileHeight: 160
     property bool isLastRowLarge: false
+    property real tileSpacing: tileHeight/4 //As calculated. UX designer may change value here .
+    property real largeHexagonFactor:1.5 //as calculated
+
     // The model:
     ListModel {
         id: hexagonModel
 
         ListElement {
-            name: "SmallHexagons"; cost: 120
+            name: "SmallHexagons"; cost: 160
 
         }
         ListElement {
-            name: "LargeHexagon"; cost: 240
+            name: "LargeHexagon"; cost: 250
         }
         ListElement {
-            name: "SmallHexagons"; cost: 120
+            name: "SmallHexagons"; cost: 160
         }
 
     }
@@ -43,10 +46,11 @@ Rectangle {
             id: delegateItem
             property string itemName: name
             property int modelSize: 0
-            width: listView.width; height: itemName === "LargeHexagon"? tileHeight*2 +20 :tileHeight+20
- //           clip: true
+            width: listView.width;
+            height: itemName === "LargeHexagon"? tileHeight*largeHexagonFactor  :tileHeight
+           // clip: true
             Row {
-                spacing: 20
+                spacing: tileSpacing
                 anchors.horizontalCenter: parent.horizontalCenter
                 anchors.verticalCenter: parent.verticalCenter
 
@@ -69,21 +73,21 @@ Rectangle {
                         isExpanded: itemName === "LargeHexagon"
                         onToggleSize:{
                             if(isExpanded) {
-                                delegateItem.height = 20+tileHeight*2
+                                delegateItem.height = tileHeight*largeHexagonFactor
                             } else {
-                                delegateItem.height = tileHeight+20
+                                delegateItem.height = tileHeight
                             }
                         }
                         onNewHexagonAdded: {
-                            delegateItem.height = tileHeight +20
+                            delegateItem.height = tileHeight
                         }
 
                         onHexagonRemoved: {
                             modelSize --
-                            console.log("removed hexagon")
+                            //console.log("removed hexagon")
                             if(modelSize === 0) {
                                 delegateItem.height = 0
-                                console.log("no hexagons in row")
+                                //console.log("no hexagons in row")
                             }
 
                         }
@@ -135,7 +139,7 @@ Rectangle {
             source: "qrc:/faded_add_new_hexagon.svg"
             //anchors.horizontalCenter: root.horizontalCenter
             Layout.alignment: Qt.AlignHCenter
-            Layout.preferredHeight: tileHeight/2
+            Layout.preferredHeight: tileHeight/largeHexagonFactor
             Layout.preferredWidth: tileHeight
             //            Layout.fillWidth:false
             //            Layout.fillHeight:false
@@ -149,13 +153,13 @@ Rectangle {
                 if(isLastRowLarge){
                     hexagonModel.append({
                                             "name": "SmallHexagons",
-                                            "cost": 120
+                                            "cost": 160
                                         })
                 } else {
 
                     hexagonModel.append({
                                             "name": "LargeHexagon",
-                                            "cost": 240
+                                            "cost": 250
                                         })
                 }
                 isLastRowLarge = !isLastRowLarge

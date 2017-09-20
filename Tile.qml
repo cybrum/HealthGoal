@@ -18,11 +18,12 @@ Image {
     property bool isLargeHexagon: false
     property bool isFadedHexagon: false
     property bool isExpanded: false
-    property int hexagonLength: 120
+    property real hexagonLength: 160
+    property real largeHexagonFactor:1.5 //as calculated
 
     source: isFadedHexagon? "qrc:/faded_add_new_hexagon.svg" :(isLargeHexagon?"qrc:/hexagon_large.svg":"qrc:/hexagon_small.svg")
-    width: isLargeHexagon? (isExpanded?hexagonLength*2:hexagonLength): hexagonLength
-    height: isLargeHexagon? (isExpanded?hexagonLength*2:hexagonLength): (isFadedHexagon?hexagonLength/2:hexagonLength)
+    width: isLargeHexagon? (isExpanded?hexagonLength*largeHexagonFactor:hexagonLength): hexagonLength
+    height: isLargeHexagon? (isExpanded?hexagonLength*largeHexagonFactor:hexagonLength): (isFadedHexagon?hexagonLength/largeHexagonFactor:hexagonLength)
 
     signal toggleSize(bool isLarge)
     //To Add: Pass true to add 2 small hexagons and false to add Large hexagon
