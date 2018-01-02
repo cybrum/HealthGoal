@@ -10,7 +10,6 @@
         <file>close_button.svg</file>
         <file>expand_button.svg</file>
         <file>faded_add_new_hexagon.svg</file>
-        <file>hexagon_large.svg</file>
         <file>hexagon_small.svg</file>
         <file>profile_circle.svg</file>
     </qresource>

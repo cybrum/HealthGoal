@@ -18,29 +18,13 @@ Rectangle {
     color: "white"
     property real tileHeight: 160
     property bool isLastRowLarge: false
-    property real tileSpacing: tileHeight/4 //As calculated. UX designer may change value here .
+    property real tileSpacing: tileHeight/10 //As calculated. UX designer may change value here .
     property real largeHexagonFactor:1.5 //as calculated
-
-    // The model:
-    ListModel {
-        id: hexagonModel
-
-        ListElement {
-            name: "SmallHexagons"; cost: 160
-
-        }
-        ListElement {
-            name: "LargeHexagon"; cost: 250
-        }
-        ListElement {
-            name: "SmallHexagons"; cost: 160
-        }
-
-    }
+    property real yPos : 0
 
     // The delegate
     Component {
-        id: listDelegate
+        id: delegate
 
         Item {
             id: delegateItem
@@ -48,7 +32,7 @@ Rectangle {
             property int modelSize: 0
             width: listView.width;
             height: itemName === "LargeHexagon"? tileHeight*largeHexagonFactor  :tileHeight
-           // clip: true
+            // clip: true
             Row {
                 spacing: tileSpacing
                 anchors.horizontalCenter: parent.horizontalCenter
@@ -94,77 +78,111 @@ Rectangle {
                     }
                 }
             }
-
-            // Animate adding and removing of items:
-
-            ListView.onAdd: SequentialAnimation {
-                PropertyAction { target: delegateItem; property: "height"; value: 0 }
-                NumberAnimation { target: delegateItem; property: "height"; to: delegateItem.height; duration: 250; easing.type: Easing.InOutQuad }
-            }
-
-            ListView.onRemove: SequentialAnimation {
-                PropertyAction { target: delegateItem; property: "ListView.delayRemove"; value: true }
-                NumberAnimation { target: delegateItem; property: "height"; to: 0; duration: 250; easing.type: Easing.InOutQuad }
-
-                // Make sure delayRemove is set back to false so that the item can be destroyed
-                PropertyAction { target: delegateItem; property: "ListView.delayRemove"; value: false }
-            }
         }
     }
-
-    ColumnLayout {
+    //!
+    Item {
 
         anchors.fill: parent
         ProfileArea {
-            Layout.alignment: Qt.AlignHCenter
-            Layout.fillHeight: false
-            Layout.fillWidth: true
+            id: profileArea
             anchors.top: parent.top
-            Layout.minimumHeight: 100
+            height: 100
+            width: root.width
 
         }
-        // The view:
-        ListView {
-            id: listView
-            //anchors.fill: parent
-            Layout.fillHeight: true
-            Layout.fillWidth: true
-            model: hexagonModel
-            delegate: listDelegate
+        Row {
+            id: firstRow
+            spacing: tileSpacing
+            anchors {
+                top: profileArea.bottom
+                topMargin: tileSpacing
+                horizontalCenter: parent.horizontalCenter
+            }
+
+
+            Repeater {
+                id: repeater
+                model: 2
+                Tile  {
+                    isLargeHexagon: false
+                    hexagonLength:  tileHeight
+                    isExpanded: false
+                    onHexagonRemoved: {
+                        if(repeater.count === 0) {
+                            firstRow.height = 0
+                        }
+                    }
+                }
+            }
+        }
+        Tile  {
+            id:secondRow
+            anchors {
+                top: firstRow.bottom
+                topMargin:  firstRow.height === 0 ? tileSpacing : - tileSpacing*1.5
+                horizontalCenter: parent.horizontalCenter
+            }
+            isLargeHexagon: true
+            hexagonLength:  tileHeight
+            isExpanded: true
+            onHexagonRemoved: {
+                    secondRow.height = 0
+            }
         }
 
+        Row {
+            id: thirdRow
+            spacing: tileSpacing
+            anchors.top: secondRow.bottom
+            anchors.topMargin: - tileSpacing* 1.5
+            anchors.horizontalCenter: parent.horizontalCenter
+            Repeater {
+                id: repeater2
+                model: 2
+                Tile  {
+                    isLargeHexagon: false
+                    hexagonLength:  tileHeight
+                    isExpanded: false
+                }
+            }
+        }
 
         Tile  {
             id: fadedHexagon
             source: "qrc:/faded_add_new_hexagon.svg"
-            //anchors.horizontalCenter: root.horizontalCenter
-            Layout.alignment: Qt.AlignHCenter
-            Layout.preferredHeight: tileHeight/largeHexagonFactor
-            Layout.preferredWidth: tileHeight
-            //            Layout.fillWidth:false
-            //            Layout.fillHeight:false
+            anchors.horizontalCenter: parent.horizontalCenter
+            height: tileHeight/largeHexagonFactor
+            width: tileHeight
             isFadedHexagon:true
             isLargeHexagon: false
             anchors.bottom: parent.bottom
             hexagonLength: tileHeight
             onNewHexagonAdded :{
 
-
                 if(isLastRowLarge){
-                    hexagonModel.append({
-                                            "name": "SmallHexagons",
-                                            "cost": 160
-                                        })
-                } else {
 
-                    hexagonModel.append({
-                                            "name": "LargeHexagon",
-                                            "cost": 250
-                                        })
+                    isLastRowLarge = !isLastRowLarge
+                } else {
+                    //TODO: Warning! Test code. Not real implementation
+                    var component = Qt.createComponent("Tile.qml");
+                    var newHexagon = component.createObject(root);
+                    newHexagon.y = thirdRow.y + thirdRow.height
+                    newHexagon.x = (root.width - newHexagon.width)/2
                 }
-                isLastRowLarge = !isLastRowLarge
             }
         }
+    }
+
+    function createHexagonObject() {
+        var component = Qt.createComponent("Tile.qml");
+        var newHexagon = component.createObject(root);
+
+        if (null === newHexagon) {
+            // Error Handling
+            console.log("Error creating hexagon");
+        }
+        return newHexagon;
     }
 }
 

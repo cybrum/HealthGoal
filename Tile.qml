@@ -21,7 +21,7 @@ Image {
     property real hexagonLength: 160
     property real largeHexagonFactor:1.5 //as calculated
 
-    source: isFadedHexagon? "qrc:/faded_add_new_hexagon.svg" :(isLargeHexagon?"qrc:/hexagon_large.svg":"qrc:/hexagon_small.svg")
+    source: isFadedHexagon? "qrc:/faded_add_new_hexagon.svg" :"qrc:/hexagon_small.svg"
     width: isLargeHexagon? (isExpanded?hexagonLength*largeHexagonFactor:hexagonLength): hexagonLength
     height: isLargeHexagon? (isExpanded?hexagonLength*largeHexagonFactor:hexagonLength): (isFadedHexagon?hexagonLength/largeHexagonFactor:hexagonLength)
 
