@@ -26,13 +26,5 @@ TASKS COMPLETED:
 21.Detailed code comments,    
 22.Documentation of the design with explanations,    
 23.Update from Flickable to Scrollview,    
-24.Scrollview viewport issue in Mac.
+24.Fixed Scrollview viewport issue in Mac.
 
-
-BACKGROUND:                                                                                        
-The app was initially created for an american startup named Kabrya, who didn't pay for the tasks. 
-
-
-REPORTING:                                                                                                                       
-If anyone finds this similar app online, please report back to me as soon as possible. 
-Any buyer interested to use this code can contact me on nibedit.dev@gmail.com.
